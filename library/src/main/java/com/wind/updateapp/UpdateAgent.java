@@ -6,7 +6,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+
+import java.io.File;
 
 /**
  * Created by wind on 16/5/9.
@@ -109,15 +113,21 @@ public class UpdateAgent {
                     try{
                         UpdateDialogFragment dialogFragment=new UpdateDialogFragment();
                         Bundle args=new Bundle();
+                        args.putBoolean(UpdateDialogFragment.ARG_KEY_DOWNLOADED,isDownloaded(updateInfo.getLatestAppUrl()));
                         args.putBoolean(UpdateDialogFragment.ARG_KEY_FORCEUPDATE,forceUpdate);
                         dialogFragment.setArguments(args);
                         dialogFragment.setUpdateCallback(new UpdateDialogFragment.UpdateCallback() {
                             @Override
-                            public void update() {
-                                //启动下载service
-                                Intent intent = new Intent(context,DownloadService.class);
-                                intent.putExtra(DownloadService.EXTRA_KEY_DOWNLOAD_URL,updateInfo.getLatestAppUrl());
-                                context.startService(intent);
+                            public void update(boolean isDownloaded) {
+                                if (isDownloaded){
+                                    AutoInstall.install(context,getDownloadApkPath(updateInfo.getLatestAppUrl()));
+                                }else {
+                                    //启动下载service
+                                    Intent intent = new Intent(context,DownloadService.class);
+                                    intent.putExtra(DownloadService.EXTRA_KEY_DOWNLOAD_URL,updateInfo.getLatestAppUrl());
+                                    context.startService(intent);
+                                }
+
                             }
 
                             @Override
@@ -136,6 +146,27 @@ public class UpdateAgent {
 
         }
     }
+
+    public  static  boolean isDownloaded(String latestAppUrl) {
+        return new File(getDownloadApkPath(latestAppUrl)).exists();
+    }
+    public static String getDownloadApkPath(String latestAppUrl) {
+        return getDownloadPath() + getFilenName(latestAppUrl);
+    }
+    public static String getFilenName(String downloadUrl) {
+        return downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
+    }
+    public static  String getDownloadPath() {
+        String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String parentPath = dir + "/download" + "/.wind/";
+        File parentDir = new File(parentPath);
+        if (!parentDir.exists()) {
+            boolean mkFlag = parentDir.mkdirs();
+            Log.e("dir", "mkFlag:" + mkFlag);
+        }
+        return parentPath;
+    }
+
 
 
     public static int getAppVersion(Context context) {

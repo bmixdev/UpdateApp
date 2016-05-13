@@ -24,6 +24,7 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
 
     public static final String SP_KEY_IGNORE_UPDATE="sp_key_ignore_update";
     public static final String ARG_KEY_FORCEUPDATE = "arg_key_forceupdate";
+    public static final String ARG_KEY_DOWNLOADED = "arg_key_downloaded";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,11 +54,14 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
     TextView tv_delay;
     TextView tv_version;
     TextView tv_update_content;
+    TextView tv_apk_is_downloaded;
     private boolean forceUpdate;
+    private boolean isDownloaded;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         forceUpdate=getArguments().getBoolean(ARG_KEY_FORCEUPDATE,false);
+        isDownloaded=getArguments().getBoolean(ARG_KEY_DOWNLOADED,false);
         initView(view);
         initListener();
     }
@@ -82,6 +86,13 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
         tv_version=(TextView)view.findViewById(R.id.tv_version);
         tv_update_content=(TextView)view.findViewById(R.id.tv_update_content);
 
+
+        tv_apk_is_downloaded=(TextView)view.findViewById(R.id.tv_apk_is_downloaded);
+        if (isDownloaded){
+            tv_apk_is_downloaded.setVisibility(View.VISIBLE);
+        }else {
+            tv_apk_is_downloaded.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -93,7 +104,7 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
     public void onClick(View view) {
         if (view.getId()==R.id.tv_update){
             dismiss();
-            callback.update();
+            callback.update(isDownloaded);
         }else if(view.getId()==R.id.tv_delay){
             dismiss();
         }
@@ -104,7 +115,7 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
         this.callback=callback;
     }
     public interface UpdateCallback{
-        void  update();
+        void  update(boolean isDownloaded);
         void ignoreUpdate(boolean isIgnore);
     }
 }

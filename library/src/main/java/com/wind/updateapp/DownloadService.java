@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -75,7 +74,7 @@ public class DownloadService extends Service {
     }
 
     private String getDownloadApkPath() {
-        return getDownloadPath() + getFilenName(downloadUrl);
+        return UpdateAgent.getInstance().getDownloadApkPath(downloadUrl);
     }
 
     Notification mNotification;
@@ -291,19 +290,11 @@ public class DownloadService extends Service {
     }
 
     private String getFilenName(String downloadUrl) {
-        return downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
+        return UpdateAgent.getInstance().getFilenName(downloadUrl);
     }
 
     private String getDownloadPath() {
-        String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String parentPath = dir + "/download" + "/.wind/";
-        File parentDir = new File(parentPath);
-        if (!parentDir.exists()) {
-            boolean mkFlag = parentDir.mkdirs();
-            Log.e("dir", "mkFlag:" + mkFlag);
-        }
-
-        return parentPath;
+      return UpdateAgent.getInstance().getDownloadPath();
     }
 
     @Override
