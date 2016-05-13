@@ -11,7 +11,9 @@ public class UpdateApi {
     public void update(String packageName, String versionCode, String channelName,UpdateListener listener) {
         try{
             Log.e("UpdateApi","update");
-            listener.onUpdateReturned(UpdateStatus.Yes,null);
+            UpdateInfo updateInfo=new UpdateInfo();
+            updateInfo.setLatestAppUrl("http://img1.51marryyou.com/2016-03-18/a0b15b52af3267491263ca48a7d4e3a1.apk");
+            listener.onUpdateReturned(UpdateStatus.Yes,updateInfo);
            /* URL url = new URL(getUpadteUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
