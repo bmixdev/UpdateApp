@@ -1,8 +1,10 @@
 package com.wind.simple;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.wind.updateapp.DialogStyle;
 import com.wind.updateapp.UpdateAgent;
 
 /**
@@ -14,7 +16,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        DialogStyle style=new DialogStyle.Builder().setLeftBtnTextColor(Color.RED).build();
+        UpdateAgent.getInstance().setDialogStyle(style);
         UpdateAgent.getInstance().update(this,"");
        /* UpdateAgent.getInstance().setUpdateListener(new UpdateApi.UpdateListener() {
             @Override

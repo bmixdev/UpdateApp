@@ -17,6 +17,7 @@ import java.io.File;
  */
 public class UpdateAgent {
     private static UpdateAgent updateAgent;
+
     private UpdateAgent(){
 
     }
@@ -72,7 +73,7 @@ public class UpdateAgent {
                     switch (updateStatus) {
                         case UpdateStatus.Yes: // has update
                             UpdateAgent.showUpdateDialog(context,
-                                    updateInfo,forceUpdate);
+                                    updateInfo,forceUpdate,mDialogStyle);
                             break;
                         case UpdateStatus.No: // has no update
                             //  ToastUtil.showToast(SettingActivity.this,"没有更新");
@@ -104,7 +105,12 @@ public class UpdateAgent {
         return UpdateDialogFragment.SP_KEY_IGNORE_UPDATE+(getAppVersion(context)+1);
     }
 
-    public static void showUpdateDialog(final FragmentActivity context, final UpdateInfo updateInfo, final boolean forceUpdate) {
+    private DialogStyle mDialogStyle;
+    public void setDialogStyle(DialogStyle style){
+        this.mDialogStyle=style;
+    }
+    public static void showUpdateDialog(final FragmentActivity context, final UpdateInfo updateInfo,
+                                        final boolean forceUpdate,final DialogStyle dialogStyle) {
         if (!context.isFinishing()){
 
             context.runOnUiThread(new Runnable() {
@@ -113,6 +119,7 @@ public class UpdateAgent {
                     try{
                         UpdateDialogFragment dialogFragment=new UpdateDialogFragment();
                         Bundle args=new Bundle();
+                        args.putSerializable(UpdateDialogFragment.ARG_KEY_DIALOG_STYLE,dialogStyle);
                         args.putBoolean(UpdateDialogFragment.ARG_KEY_DOWNLOADED,isDownloaded(updateInfo.getLatestAppUrl()));
                         args.putBoolean(UpdateDialogFragment.ARG_KEY_FORCEUPDATE,forceUpdate);
                         dialogFragment.setArguments(args);

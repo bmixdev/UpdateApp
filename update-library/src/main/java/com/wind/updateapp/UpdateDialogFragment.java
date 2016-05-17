@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -25,6 +26,7 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
     public static final String SP_KEY_IGNORE_UPDATE="sp_key_ignore_update";
     public static final String ARG_KEY_FORCEUPDATE = "arg_key_forceupdate";
     public static final String ARG_KEY_DOWNLOADED = "arg_key_downloaded";
+    public static final String ARG_KEY_DIALOG_STYLE = "arg_key_dialog_style";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,13 +57,16 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
     TextView tv_version;
     TextView tv_update_content;
     TextView tv_apk_is_downloaded;
+    LinearLayout ll_content;
     private boolean forceUpdate;
     private boolean isDownloaded;
+    private DialogStyle mDialogStyle;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         forceUpdate=getArguments().getBoolean(ARG_KEY_FORCEUPDATE,false);
         isDownloaded=getArguments().getBoolean(ARG_KEY_DOWNLOADED,false);
+        mDialogStyle= (DialogStyle) getArguments().getSerializable(ARG_KEY_DIALOG_STYLE);
         initView(view);
         initListener();
     }
@@ -93,7 +98,32 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
         }else {
             tv_apk_is_downloaded.setVisibility(View.GONE);
         }
+
+        ll_content= (LinearLayout) view.findViewById(R.id.ll_content);
+
+        if (mDialogStyle!=null){
+            if (mDialogStyle.getContentBackground()!=0){
+                ll_content.setBackgroundResource(mDialogStyle.getContentBackground());
+            }
+            if (mDialogStyle.getLeftBtnBackground()!=0){
+                tv_update.setBackgroundResource(mDialogStyle.getLeftBtnBackground());
+            }
+            if (mDialogStyle.getLeftBtnTextColor()!=0){
+                tv_update.setTextColor(mDialogStyle.getLeftBtnTextColor());
+            }
+
+            if (mDialogStyle.getRightBtnBackground()!=0){
+                tv_delay.setBackgroundResource(mDialogStyle.getRightBtnBackground());
+            }
+            if (mDialogStyle.getRightBtnTextColor()!=0){
+                tv_delay.setTextColor(mDialogStyle.getRightBtnTextColor());
+            }
+        }
     }
+
+
+
+
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
