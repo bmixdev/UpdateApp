@@ -27,6 +27,7 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
     public static final String ARG_KEY_FORCEUPDATE = "arg_key_forceupdate";
     public static final String ARG_KEY_DOWNLOADED = "arg_key_downloaded";
     public static final String ARG_KEY_DIALOG_STYLE = "arg_key_dialog_style";
+    public static final String ARG_KEY_UPDATE_INFO = "arg_key_update_info";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,12 +62,14 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
     private boolean forceUpdate;
     private boolean isDownloaded;
     private DialogStyle mDialogStyle;
+    private UpdateInfo mUpdateInfo;
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         forceUpdate=getArguments().getBoolean(ARG_KEY_FORCEUPDATE,false);
         isDownloaded=getArguments().getBoolean(ARG_KEY_DOWNLOADED,false);
         mDialogStyle= (DialogStyle) getArguments().getSerializable(ARG_KEY_DIALOG_STYLE);
+        mUpdateInfo= (UpdateInfo) getArguments().getSerializable(ARG_KEY_UPDATE_INFO);
         initView(view);
         initListener();
     }
@@ -90,6 +93,9 @@ public class UpdateDialogFragment extends DialogFragment implements CompoundButt
         tv_delay=(TextView)view.findViewById(R.id.tv_delay);
         tv_version=(TextView)view.findViewById(R.id.tv_version);
         tv_update_content=(TextView)view.findViewById(R.id.tv_update_content);
+
+        tv_version.setText("最新版本:"+mUpdateInfo.getLatestVersion());
+        tv_update_content.setText(mUpdateInfo.getLatestUpdateContent());
 
 
         tv_apk_is_downloaded=(TextView)view.findViewById(R.id.tv_apk_is_downloaded);

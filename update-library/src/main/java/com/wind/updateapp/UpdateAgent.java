@@ -122,6 +122,7 @@ public class UpdateAgent {
                         args.putSerializable(UpdateDialogFragment.ARG_KEY_DIALOG_STYLE,dialogStyle);
                         args.putBoolean(UpdateDialogFragment.ARG_KEY_DOWNLOADED,isDownloaded(updateInfo.getLatestAppUrl()));
                         args.putBoolean(UpdateDialogFragment.ARG_KEY_FORCEUPDATE,forceUpdate);
+                        args.putSerializable(UpdateDialogFragment.ARG_KEY_UPDATE_INFO,updateInfo);
                         dialogFragment.setArguments(args);
                         dialogFragment.setUpdateCallback(new UpdateDialogFragment.UpdateCallback() {
                             @Override

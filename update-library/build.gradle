@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.novoda.bintray-release'//添加
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.0"
@@ -23,4 +23,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:support-v4:22.0.0'
+}
+//命令行中./gradlew clean build bintrayUpload -PbintrayUser=yqyzxd -PbintrayKey=7111b40cc96f58430ceac2891dcf8fc52d6fdc1f -PdryRun=false
+//添加
+publish {
+    userOrg = 'yqyzxd'//bintray.com用户名
+    groupId = 'com.wind'//jcenter上的路径
+    artifactId = 'update-library'//项目名称
+    publishVersion = '1.0.0'//版本号
+    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+    website = 'https://github.com/yqyzxd/UpdateApp'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }

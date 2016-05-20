@@ -1,9 +1,11 @@
 package com.wind.updateapp;
 
+import java.io.Serializable;
+
 /**
  * Created by wind on 16/5/10.
  */
-public class UpdateInfo {
+public class UpdateInfo implements Serializable{
 
     private String latestVersion;
 
