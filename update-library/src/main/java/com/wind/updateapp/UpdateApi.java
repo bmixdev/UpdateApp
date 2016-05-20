@@ -1,5 +1,7 @@
 package com.wind.updateapp;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -38,6 +40,7 @@ public class UpdateApi {
                 InputStream ips=connection.getInputStream();
 
                 String result=StreamTool.readInputStream(ips);
+                Log.e("UpdateApi","result:"+result);
                 try {
                     //转成对象
                     JSONObject jsonObject = new JSONObject(result);
@@ -52,9 +55,11 @@ public class UpdateApi {
                     updateInfo.setLatestAppUrl(appUrl);
                     updateInfo.setLatestAppSize(appSize);
                     listener.onUpdateReturned(UpdateStatus.Yes, updateInfo);
+                    Log.e("UpdateApi","has_updae");
                 }catch (Exception e){
                     e.printStackTrace();
                     listener.onUpdateReturned(UpdateStatus.No, null);
+                    Log.e("UpdateApi","no_updae");
                 }
             }
 

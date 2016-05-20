@@ -18,7 +18,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         DialogStyle style=new DialogStyle.Builder().setLeftBtnTextColor(Color.RED).build();
         UpdateAgent.getInstance().setDialogStyle(style);
-        UpdateAgent.getInstance().update(this,"");
+        UpdateAgent.getInstance().update(this,"xiaomi");
        /* UpdateAgent.getInstance().setUpdateListener(new UpdateApi.UpdateListener() {
             @Override
             public void onUpdateReturned(int updateStatus, UpdateInfo updateInfo) {
